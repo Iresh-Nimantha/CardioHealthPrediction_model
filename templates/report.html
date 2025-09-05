@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Assessment Report</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          system-ui, sans-serif;
+        background: #f8fafc;
+        color: #2d3748;
+        line-height: 1.5;
+      }
+
+      /* A4 Paper Dimensions */
+      .a4-container {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 20px auto;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .report-content {
+        padding: 20mm;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header Section */
+      .report-header {
+        text-align: center;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 3px solid #2d3748;
+        position: relative;
+      }
+
+      .report-header::after {
+        content: "";
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #4299e1, #48bb78, #ed8936);
+      }
+
+      .report-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a365d;
+        margin-bottom: 8px;
+        letter-spacing: -0.3px;
+      }
+
+      .report-header .subtitle {
+        font-size: 14px;
+        color: #4a5568;
+        font-weight: 500;
+      }
+
+      .report-date {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        color: #718096;
+      }
+
+      /* Patient Information Section */
+      .patient-section {
+        margin-bottom: 25px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e2e8f0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .patient-info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .info-item {
+        padding: 15px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+      }
+
+      .info-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #718096;
+        margin-bottom: 6px;
+      }
+
+      .info-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2d3748;
+      }
+
+      /* Medical Data Section */
+      .medical-section {
+        margin-bottom: 25px;
+      }
+
+      .metrics-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      .metrics-table th {
+        background: #edf2f7;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        color: #4a5568;
+        border-bottom: 2px solid #cbd5e0;
+      }
+
+      .metrics-table td {
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 14px;
+      }
+
+      .metrics-table tr:hover {
+        background: #f8fafc;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .status-positive {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+
+      .status-negative {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+
+      /* Risk Assessment Section */
+      .risk-section {
+        margin-bottom: 25px;
+        text-align: center;
+      }
+
+      .risk-card {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 25px;
+        margin: 15px 0;
+      }
+
+      .risk-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .risk-score {
+        font-size: 48px;
+        font-weight: 800;
+        margin: 15px 0;
+      }
+
+      .risk-level {
+        font-size: 18px;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+
+      /* Risk Level Colors */
+      .low-risk {
+        color: #22543d;
+      }
+
+      .low-risk .risk-score {
+        color: #38a169;
+      }
+
+      .low-risk .risk-level {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+
+      .medium-risk {
+        color: #c05621;
+      }
+
+      .medium-risk .risk-score {
+        color: #dd6b20;
+      }
+
+      .medium-risk .risk-level {
+        background: #fed7aa;
+        color: #c05621;
+      }
+
+      .high-risk {
+        color: #742a2a;
+      }
+
+      .high-risk .risk-score {
+        color: #e53e3e;
+      }
+
+      .high-risk .risk-level {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+
+      /* Recommendations Section */
+      .recommendations-section {
+        margin-bottom: 25px;
+      }
+
+      .recommendations-content {
+        background: #ebf8ff;
+        border-left: 4px solid #4299e1;
+        padding: 20px;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .recommendations-content h3 {
+        color: #2b6cb0;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      .recommendations-content p {
+        color: #2d3748;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .recommendations-content ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+
+      .recommendations-content li {
+        color: #2d3748;
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+
+      /* Footer Section */
+      .report-footer {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        text-align: center;
+      }
+
+      .disclaimer {
+        font-size: 10px;
+        color: #718096;
+        line-height: 1.4;
+        margin-bottom: 10px;
+      }
+
+      .footer-actions {
+        margin: 15px 0;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0 5px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: #4299e1;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #3182ce;
+      }
+
+      .btn-secondary {
+        background: white;
+        color: #4a5568;
+        border: 1px solid #cbd5e0;
+      }
+
+      .btn-secondary:hover {
+        background: #f8fafc;
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+        }
+
+        .a4-container {
+          width: 100%;
+          max-width: none;
+          margin: 0;
+          box-shadow: none;
+          page-break-inside: avoid;
+        }
+
+        .report-content {
+          padding: 15mm;
+        }
+
+        .footer-actions {
+          display: none;
+        }
+
+        .btn {
+          display: none;
+        }
+
+        @page {
+          size: A4;
+          margin: 0;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+      }
+
+      /* Screen Responsive */
+      @media screen and (max-width: 768px) {
+        .a4-container {
+          width: 95%;
+          margin: 10px auto;
+        }
+
+        .report-content {
+          padding: 15px;
+        }
+
+        .patient-info-grid {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .metrics-table {
+          font-size: 12px;
+        }
+
+        .risk-score {
+          font-size: 36px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="a4-container">
+      <div class="report-content">
+        <!-- Header -->
+        <div class="report-header">
+          <div class="report-date">
+            Report ID: MED-{{ name[:3]|upper }}-{{ range(1000, 9999)|random }}
+          </div>
+          <h1>Medical Risk Assessment Report</h1>
+          <div class="subtitle">Cardiovascular Health Evaluation</div>
+        </div>
+
+        <!-- Patient Information -->
+        <div class="patient-section">
+          <h2 class="section-title">Patient Information</h2>
+          <div class="patient-info-grid">
+            <div class="info-item">
+              <div class="info-label">Patient Name</div>
+              <div class="info-value">{{ name }}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Gender</div>
+              <div class="info-value">
+                {% if gender == 1 %}Male{% elif gender == 0 %}Female{% else
+                %}Not Specified{% endif %}
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Age</div>
+              <div class="info-value">{{ age }} years</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medical Data -->
+        <div class="medical-section">
+          <h2 class="section-title">Laboratory Results & Health Metrics</h2>
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Unit</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Total Cholesterol</strong></td>
+                <td>{{ tc }}</td>
+                <td>mg/dl</td>
+                <td>
+                  {% if tc > 240 %}
+                  <span class="status-badge status-positive">High</span>
+                  {% elif tc > 200 %}
+                  <span
+                    class="status-badge"
+                    style="background: #fed7aa; color: #c05621"
+                    >Borderline</span
+                  >
+                  {% else %}
+                  <span class="status-badge status-negative">Normal</span>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td><strong>HDL Cholesterol</strong></td>
+                <td>{{ hdl }}</td>
+                <td>mg/dl</td>
+                <td>
+                  {% if hdl < 40 %}
+                  <span class="status-badge status-positive">Low</span>
+                  {% else %}
+                  <span class="status-badge status-negative">Normal</span>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Smoking Status</strong></td>
+                <td colspan="2">
+                  {% if smoke == 1 %}Active Smoker{% else %}Non-Smoker{% endif
+                  %}
+                </td>
+                <td>
+                  <span
+                    class="status-badge {% if smoke == 1 %}status-positive{% else %}status-negative{% endif %}"
+                  >
+                    {% if smoke == 1 %}Risk Factor{% else %}No Risk{% endif %}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Blood Pressure Medication</strong></td>
+                <td colspan="2">
+                  {% if bpm == 1 %}Currently Taking{% else %}Not Taking{% endif
+                  %}
+                </td>
+                <td>
+                  <span
+                    class="status-badge {% if bpm == 1 %}status-positive{% else %}status-negative{% endif %}"
+                  >
+                    {% if bpm == 1 %}On Treatment{% else %}No Treatment{% endif
+                    %}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Diabetes Status</strong></td>
+                <td colspan="2">
+                  {% if diab == 1 %}Diabetic{% else %}Non-Diabetic{% endif %}
+                </td>
+                <td>
+                  <span
+                    class="status-badge {% if diab == 1 %}status-positive{% else %}status-negative{% endif %}"
+                  >
+                    {% if diab == 1 %}Risk Factor{% else %}No Risk{% endif %}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="risk-section">
+          <h2 class="section-title">Risk Assessment</h2>
+          <div
+            class="risk-card {% if resulte < 30 %}low-risk{% elif resulte < 70 %}medium-risk{% else %}high-risk{% endif %}"
+          >
+            <div class="risk-title">Cardiovascular Risk Score</div>
+            <div class="risk-score">{{ resulte }}%</div>
+            <div class="risk-level">
+              {% if resulte < 30 %} LOW RISK {% elif resulte < 70 %} MODERATE
+              RISK {% else %} HIGH RISK {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendations-section">
+          <h2 class="section-title">Clinical Recommendations</h2>
+          <div class="recommendations-content">
+            <h3>Recommended Actions</h3>
+            {% if resulte < 30 %}
+            <p>
+              <strong>Low Risk Assessment:</strong> Your cardiovascular risk is
+              currently within acceptable limits.
+            </p>
+            <ul>
+              <li>Continue maintaining current healthy lifestyle practices</li>
+              <li>
+                Regular exercise (150 minutes moderate intensity per week)
+              </li>
+              <li>Maintain balanced diet low in saturated fats</li>
+              <li>Schedule routine health screenings as recommended</li>
+              <li>Monitor blood pressure and cholesterol annually</li>
+            </ul>
+            {% elif resulte < 70 %}
+            <p>
+              <strong>Moderate Risk Assessment:</strong> Lifestyle modifications
+              are recommended to reduce cardiovascular risk.
+            </p>
+            <ul>
+              <li>Implement dietary changes to reduce cholesterol intake</li>
+              <li>Increase physical activity to 200+ minutes per week</li>
+              <li>Consider smoking cessation programs if applicable</li>
+              <li>Weight management if BMI is elevated</li>
+              <li>Follow-up appointment within 3-6 months</li>
+              <li>Monitor blood pressure more frequently</li>
+            </ul>
+            {% else %}
+            <p>
+              <strong>High Risk Assessment:</strong> Immediate medical
+              consultation and intensive interventions recommended.
+            </p>
+            <ul>
+              <li>Schedule appointment with cardiologist within 2 weeks</li>
+              <li>Discuss medication options for risk reduction</li>
+              <li>Implement comprehensive lifestyle modification program</li>
+              <li>Consider cardiac stress testing or imaging studies</li>
+              <li>Intensive monitoring of all risk factors</li>
+              <li>Emergency action plan for cardiac symptoms</li>
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="report-footer">
+          <div class="disclaimer">
+            <strong>Medical Disclaimer:</strong> This report is generated for
+            informational and screening purposes only. It should not replace
+            professional medical advice, diagnosis, or treatment. Please consult
+            with qualified healthcare providers for comprehensive medical
+            evaluation and personalized treatment recommendations.
+          </div>
+
+          <div class="footer-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary"
+              >← New Assessment</a
+            >
+            <a href="#" class="btn btn-secondary" onclick="window.print()"
+              >🖨️ Print Report</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

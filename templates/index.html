@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CardioHealth Pro - Cardiovascular Risk Assessment</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          system-ui, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      /* Navigation */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-decoration: none;
+      }
+
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        color: #667eea;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .cta-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #333;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 150px 0 100px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        font-weight: 400;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 1rem 2rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background: white;
+        color: #667eea;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Features Section */
+      .features {
+        padding: 100px 0;
+        background: #f8fafc;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1a365d;
+        margin-bottom: 1rem;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: #64748b;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: white;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      }
+
+      .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a365d;
+        margin-bottom: 1rem;
+      }
+
+      .feature-description {
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      /* Assessment Form Section */
+      .assessment-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .assessment-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .form-header {
+        background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .form-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4299e1, #48bb78, #ed8936);
+      }
+
+      .form-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-header p {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+
+      .form-body {
+        padding: 2.5rem;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        margin-bottom: 2rem;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4299e1, #48bb78);
+        width: 0%;
+        transition: width 0.3s ease;
+        border-radius: 3px;
+      }
+
+      .progress-text {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+      }
+
+      /* Horizontal Layout */
+      .form-sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .form-section {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        min-height: 320px;
+      }
+
+      .form-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        border-color: #cbd5e0;
+      }
+
+      .section-title-form {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .section-icon {
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #4299e1, #3182ce);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        background: white;
+        color: #374151;
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .input-hint {
+        font-size: 0.7rem;
+        color: #6b7280;
+        margin-top: 0.3rem;
+        font-style: italic;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 0.8rem;
+        margin-top: 0.4rem;
+        flex-wrap: wrap;
+      }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        background: white;
+        min-width: fit-content;
+      }
+
+      .radio-option:hover {
+        background: #f1f5f9;
+        border-color: #e2e8f0;
+      }
+
+      .radio-input {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #d1d5db;
+        border-radius: 50%;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0;
+        flex-shrink: 0;
+      }
+
+      .radio-input:checked {
+        border-color: #3b82f6;
+        background: #3b82f6;
+      }
+
+      .radio-input:checked::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: white;
+      }
+
+      .radio-label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #374151;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .required-asterisk {
+        color: #ef4444;
+        margin-left: 2px;
+      }
+
+      /* Submit Section */
+      .submit-section {
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .submit-btn {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+      }
+
+      /* About Section */
+      .about {
+        padding: 100px 0;
+        background: white;
+      }
+
+      /* Footer */
+      .footer {
+        background: #1a365d;
+        color: white;
+        padding: 4rem 0 2rem;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #4299e1;
+      }
+
+      .footer-section p,
+      .footer-section li {
+        color: #cbd5e0;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section a {
+        color: #cbd5e0;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-section a:hover {
+        color: #4299e1;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid #2d3748;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        text-align: center;
+        color: #9ca3af;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .form-sections {
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+        }
+
+        .form-section:last-child {
+          grid-column: 1 / -1;
+          max-width: 500px;
+          margin: 0 auto;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .nav-menu {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: white;
+          flex-direction: column;
+          padding: 2rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          gap: 1rem;
+        }
+
+        .nav-menu.active {
+          display: flex;
+        }
+
+        .hero {
+          padding: 120px 0 80px;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .form-sections {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .form-section {
+          min-height: auto;
+          padding: 1.2rem;
+        }
+
+        .form-section:last-child {
+          grid-column: 1;
+          max-width: none;
+        }
+
+        .radio-group {
+          flex-direction: column;
+          gap: 0.6rem;
+        }
+
+        .radio-option {
+          justify-content: flex-start;
+          width: 100%;
+        }
+
+        .form-body {
+          padding: 1.5rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Loading state */
+      .loading {
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .loading .submit-btn {
+        background: #9ca3af;
+        cursor: not-allowed;
+      }
+
+      .loading .submit-btn::after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        margin-left: 8px;
+        border: 2px solid #ffffff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="#" class="logo">CardioHealth Pro</a>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#assessment" class="nav-link">Assessment</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="#assessment" class="cta-button">Start Assessment</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Assess Your Cardiovascular Risk Today</h1>
+        <p>
+          Get personalized insights into your heart health with our
+          comprehensive risk assessment tool powered by medical research and
+          machine learning.
+        </p>
+        <div class="hero-buttons">
+          <a href="#assessment" class="btn-primary"> Start Assessment </a>
+          <a href="#features" class="btn-secondary"> Learn More </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Choose CardioHealth Pro?</h2>
+          <p class="section-subtitle">
+            Our advanced assessment tool provides comprehensive cardiovascular
+            risk analysis using validated medical algorithms and machine
+            learning.
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔬</div>
+            <h3 class="feature-title">Scientific Accuracy</h3>
+            <p class="feature-description">
+              Based on established cardiovascular risk prediction models and
+              clinical guidelines used by healthcare professionals worldwide.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Instant Results</h3>
+            <p class="feature-description">
+              Get your cardiovascular risk assessment in seconds with detailed
+              explanations and personalized recommendations.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">Privacy Protected</h3>
+            <p class="feature-description">
+              Your health data is processed securely and privately. We don't
+              store personal information or share data with third parties.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">Comprehensive Analysis</h3>
+            <p class="feature-description">
+              Detailed breakdown of risk factors including cholesterol levels,
+              lifestyle factors, and medical history with professional-grade
+              reports.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3 class="feature-title">Actionable Insights</h3>
+            <p class="feature-description">
+              Receive practical recommendations to improve your cardiovascular
+              health and reduce your risk profile with specific next steps.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3 class="feature-title">AI-Powered</h3>
+            <p class="feature-description">
+              Advanced machine learning algorithms trained on medical data to
+              provide accurate risk predictions and personalized health
+              insights.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assessment Form Section -->
+    <section id="assessment" class="assessment-section">
+      <div class="container">
+        <div class="assessment-container">
+          <div class="form-header">
+            <h2>Cardiovascular Risk Assessment</h2>
+            <p>
+              Quick and comprehensive evaluation of your heart health risk
+              factors
+            </p>
+          </div>
+
+          <form action="/" method="POST" id="riskForm">
+            <div class="form-body">
+              <!-- Progress Bar -->
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">
+                  Complete all fields to generate your assessment
+                </div>
+              </div>
+
+              <!-- Horizontal Form Sections -->
+              <div class="form-sections">
+                <!-- Personal Information -->
+                <div class="form-section">
+                  <h3 class="section-title-form">
+                    <span class="section-icon">👤</span>
+                    Personal Info
+                  </h3>
+
+                  <div class="form-group">
+                    <label class="form-label" for="name">
+                      Full Name <span class="required-asterisk">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      class="form-input"
+                      required
+                      placeholder="Enter your name"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      Gender <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="radio-group">
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="1"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">Male</span>
+                      </label>
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="0"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">Female</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="age">
+                      Age <span class="required-asterisk">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="age"
+                      name="age"
+                      class="form-input"
+                      required
+                      min="18"
+                      max="100"
+                      placeholder="Age (18-100)"
+                    />
+                    <div class="input-hint">Must be 18-100 years</div>
+                  </div>
+                </div>
+
+                <!-- Clinical Measurements -->
+                <div class="form-section">
+                  <h3 class="section-title-form">
+                    <span class="section-icon">🔬</span>
+                    Lab Results
+                  </h3>
+
+                  <div class="form-group">
+                    <label class="form-label" for="tc">
+                      Total Cholesterol <span class="required-asterisk">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="tc"
+                      name="tc"
+                      class="form-input"
+                      required
+                      min="100"
+                      max="500"
+                      placeholder="mg/dL"
+                    />
+                    <div class="input-hint">Normal: 125-200 mg/dL</div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="hdl">
+                      HDL Cholesterol <span class="required-asterisk">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="hdl"
+                      name="hdl"
+                      class="form-input"
+                      required
+                      min="20"
+                      max="100"
+                      placeholder="mg/dL"
+                    />
+                    <div class="input-hint">Optimal: ≥60 (M), ≥50 (F)</div>
+                  </div>
+                </div>
+
+                <!-- Risk Factors -->
+                <div class="form-section">
+                  <h3 class="section-title-form">
+                    <span class="section-icon">⚠️</span>
+                    Risk Factors
+                  </h3>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      Smoking <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="radio-group">
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="smoke"
+                          value="1"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">Smoker</span>
+                      </label>
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="smoke"
+                          value="0"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">Non-Smoker</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      BP Medication <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="radio-group">
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="bpm"
+                          value="1"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">Yes</span>
+                      </label>
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="bpm"
+                          value="0"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">No</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      Diabetes <span class="required-asterisk">*</span>
+                    </label>
+                    <div class="radio-group">
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="diab"
+                          value="1"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">Yes</span>
+                      </label>
+                      <label class="radio-option">
+                        <input
+                          type="radio"
+                          name="diab"
+                          value="0"
+                          class="radio-input"
+                          required
+                        />
+                        <span class="radio-label">No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <button type="submit" class="submit-btn" id="submitBtn">
+                  Generate Assessment
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">About CardioHealth Pro</h2>
+          <p class="section-subtitle">
+            Our mission is to make cardiovascular risk assessment accessible,
+            accurate, and actionable for everyone.
+          </p>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center">
+          <p
+            style="
+              font-size: 1.1rem;
+              line-height: 1.8;
+              color: #64748b;
+              margin-bottom: 2rem;
+            "
+          >
+            CardioHealth Pro was developed by a team of cardiologists, data
+            scientists, and health technology experts. Our assessment tool is
+            based on established cardiovascular risk prediction models including
+            the Framingham Risk Score and ACC/AHA guidelines, ensuring medical
+            accuracy and reliability.
+          </p>
+          <p style="font-size: 1.1rem; line-height: 1.8; color: #64748b">
+            We believe that everyone should have access to tools that help them
+            understand and improve their heart health. Our platform provides
+            evidence-based insights while maintaining the highest standards of
+            privacy and data security.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>CardioHealth Pro</h3>
+          <p>
+            Empowering individuals with comprehensive cardiovascular risk
+            assessment tools based on medical research and clinical guidelines.
+          </p>
+          <p style="margin-top: 1rem">
+            <strong>Disclaimer:</strong> This tool is for informational purposes
+            only and does not replace professional medical advice, diagnosis, or
+            treatment.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#assessment">Assessment</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Risk Factors Guide</a></li>
+            <li><a href="#">Heart Health Tips</a></li>
+            <li><a href="#">Medical References</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <p>Email: info@cardiohealthpro.com</p>
+          <p>Phone: 1-800-CARDIO-1</p>
+          <p>Medical Advisory Board Available</p>
+          <p>24/7 Online Assessment</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2024 CardioHealth Pro. All rights reserved. | Medical accuracy
+          backed by clinical research.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Navigation scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const navMenu = document.getElementById("nav-menu");
+
+      mobileMenuBtn.addEventListener("click", function () {
+        navMenu.classList.toggle("active");
+      });
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            navMenu.classList.remove("active");
+          }
+        });
+      });
+
+      // Form functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("riskForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const progressFill = document.getElementById("progressFill");
+        const progressText = document.getElementById("progressText");
+
+        // Get all required inputs
+        const requiredInputs = form.querySelectorAll("input[required]");
+        const totalFields = requiredInputs.length;
+
+        // Update progress bar
+        function updateProgress() {
+          let filledFields = 0;
+
+          requiredInputs.forEach((input) => {
+            if (input.type === "radio") {
+              const radioGroup = form.querySelectorAll(
+                `input[name="${input.name}"]`
+              );
+              const isSelected = Array.from(radioGroup).some(
+                (radio) => radio.checked
+              );
+              if (isSelected && !input.dataset.counted) {
+                radioGroup.forEach((radio) => (radio.dataset.counted = "true"));
+                filledFields++;
+              }
+            } else if (input.value.trim() !== "") {
+              filledFields++;
+            }
+          });
+
+          // Reset radio counting
+          requiredInputs.forEach((input) => {
+            if (input.type === "radio") {
+              delete input.dataset.counted;
+            }
+          });
+
+          const progressPercentage = (filledFields / totalFields) * 100;
+          progressFill.style.width = progressPercentage + "%";
+
+          if (progressPercentage === 100) {
+            progressText.textContent = "Ready to generate assessment!";
+            progressText.style.color = "#10b981";
+          } else {
+            progressText.textContent = `${filledFields}/${totalFields} fields completed`;
+            progressText.style.color = "#6b7280";
+          }
+        }
+
+        // Add event listeners
+        requiredInputs.forEach((input) => {
+          input.addEventListener("input", updateProgress);
+          input.addEventListener("change", updateProgress);
+
+          // Visual feedback
+          input.addEventListener("focus", function () {
+            this.style.borderColor = "#3b82f6";
+            this.style.boxShadow = "0 0 0 3px rgba(59, 130, 246, 0.1)";
+          });
+
+          input.addEventListener("blur", function () {
+            if (this.validity.valid) {
+              this.style.borderColor = "#10b981";
+              this.style.boxShadow = "0 0 0 3px rgba(16, 185, 129, 0.1)";
+            } else if (this.value) {
+              this.style.borderColor = "#ef4444";
+              this.style.boxShadow = "0 0 0 3px rgba(239, 68, 68, 0.1)";
+            } else {
+              this.style.borderColor = "#e5e7eb";
+              this.style.boxShadow = "none";
+            }
+          });
+        });
+
+        // Cholesterol validation
+        const tcInput = document.getElementById("tc");
+        const hdlInput = document.getElementById("hdl");
+
+        function validateCholesterol() {
+          if (tcInput.value && hdlInput.value) {
+            const tc = parseFloat(tcInput.value);
+            const hdl = parseFloat(hdlInput.value);
+
+            if (hdl > tc) {
+              hdlInput.style.borderColor = "#ef4444";
+              hdlInput.style.boxShadow = "0 0 0 3px rgba(239, 68, 68, 0.1)";
+              return false;
+            }
+          }
+          return true;
+        }
+
+        tcInput.addEventListener("input", validateCholesterol);
+        hdlInput.addEventListener("input", validateCholesterol);
+
+        // Form submission with loading state
+        form.addEventListener("submit", function (e) {
+          if (!validateCholesterol()) {
+            e.preventDefault();
+            alert("HDL cholesterol cannot be higher than total cholesterol.");
+            return;
+          }
+
+          // Add loading state
+          form.classList.add("loading");
+          submitBtn.textContent = "Processing...";
+
+          // Validate all fields
+          let isValid = true;
+          requiredInputs.forEach((input) => {
+            if (!input.validity.valid) {
+              isValid = false;
+              input.style.borderColor = "#ef4444";
+              input.style.boxShadow = "0 0 0 3px rgba(239, 68, 68, 0.1)";
+            }
+          });
+
+          if (!isValid) {
+            e.preventDefault();
+            form.classList.remove("loading");
+            submitBtn.textContent = "Generate Assessment";
+            alert("Please correct all errors before submitting.");
+            return;
+          }
+        });
+
+        // Initial progress update
+        updateProgress();
+      });
+    </script>
+  </body>
+</html>
